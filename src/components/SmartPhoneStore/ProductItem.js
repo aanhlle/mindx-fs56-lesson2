@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 export default class ProductItem extends Component {
     render() {
-        let { phone, clickHandler } = this.props;
+        let { phone, clickHandler, addToCart } = this.props;
         return (
             <div className="card" style={{ width: "18rem" }}>
                 <img
@@ -15,12 +15,20 @@ export default class ProductItem extends Component {
                     <p className="card-text">
                         Sản phẩm chất nhất như nước cất!
                     </p>
-                    <button
-                        className="btn btn-primary"
-                        onClick={() => clickHandler(phone.id)}
-                    >
-                        Xem chi tiết
-                    </button>
+                    <div className="d-flex justify-content-around">
+                        <button
+                            className="btn btn-primary btn-sm"
+                            onClick={() => clickHandler(phone.id)}
+                        >
+                            Xem chi tiết
+                        </button>
+                        <button
+                            className="btn btn-secondary btn-sm"
+                            onClick={() => addToCart(phone.id)}
+                        >
+                            Add to Cart
+                        </button>
+                    </div>
                 </div>
             </div>
         );
