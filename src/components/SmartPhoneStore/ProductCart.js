@@ -2,6 +2,13 @@ import React, { Component } from "react";
 
 export default class ProductCart extends Component {
     render() {
+        let { cart, onPhoneAdd, onPhoneRemove, onPhoneDelete } = this.props;
+
+        let totalPrice = 0;
+        cart.forEach(
+            (phone) => (totalPrice += phone.amount * parseInt(phone.price))
+        );
+
         return (
             <div
                 className="modal fade"
@@ -18,65 +25,79 @@ export default class ProductCart extends Component {
                     <div className="modal-content">
                         <div className="modal-header border-bottom-0">
                             <h5 className="modal-title" id="exampleModalLabel">
-                                Your Shopping Cart
+                                Giỏ hàng
                             </h5>
-                            <button
-                                type="button"
-                                className="close"
-                                data-bs-dismiss="modal"
-                                aria-label="Close"
-                            >
-                                <span aria-hidden="true">×</span>
-                            </button>
                         </div>
                         <div className="modal-body">
                             <table className="table table-image">
                                 <thead>
                                     <tr>
                                         <th scope="col" />
-                                        <th scope="col">Product</th>
-                                        <th scope="col">Price</th>
-                                        <th scope="col">Qty</th>
-                                        <th scope="col">Total</th>
-                                        <th scope="col">Actions</th>
+                                        <th scope="col">Mã sản phẩm</th>
+
+                                        <th scope="col">Tên sản phẩm</th>
+                                        <th scope="col">Số lượng</th>
+                                        <th scope="col">Đơn giá</th>
+                                        <th scope="col">Thành tiền</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td className="w-25">
-                                            <img
-                                                src="https://s3.eu-central-1.amazonaws.com/bootstrapbaymisc/blog/24_days_bootstrap/vans.png"
-                                                className="img-fluid img-thumbnail"
-                                                alt="Sheep"
-                                            />
-                                        </td>
-                                        <td>Vans Sk8-Hi MTE Shoes</td>
-                                        <td>89$</td>
-                                        <td className="qty">
-                                            <input
-                                                type="text"
-                                                className="form-control"
-                                                id="input1"
-                                                defaultValue={2}
-                                            />
-                                        </td>
-                                        <td>178$</td>
-                                        <td>
-                                            <a
-                                                href="#"
-                                                className="btn btn-danger btn-sm"
-                                            >
-                                                <i className="fa fa-times" />
-                                            </a>
-                                        </td>
-                                    </tr>
+                                    {cart.map((phone) => (
+                                        <tr key={phone.id}>
+                                            <td className="w-25">
+                                                <img
+                                                    src={phone.img}
+                                                    className="img-fluid img-thumbnail"
+                                                    alt="Sheep"
+                                                />
+                                            </td>
+                                            <td>{phone.id}</td>
+                                            <td>{phone.name}</td>
+
+                                            <td>
+                                                <span
+                                                    className="btn btn-primary btn-sm"
+                                                    onClick={() => {
+                                                        onPhoneRemove(phone.id);
+                                                    }}
+                                                >
+                                                    -
+                                                </span>
+                                                {phone.amount}
+                                                <span
+                                                    className="btn btn-danger btn-sm"
+                                                    onClick={() => {
+                                                        onPhoneAdd(phone.id);
+                                                    }}
+                                                >
+                                                    +
+                                                </span>
+                                            </td>
+
+                                            <td>{parseInt(phone.price)}</td>
+                                            <td>
+                                                {phone.amount *
+                                                    parseInt(phone.price)}
+                                            </td>
+                                            <td>
+                                                <button
+                                                    className="btn btn-danger btn-sm"
+                                                    onClick={() =>
+                                                        onPhoneDelete(phone.id)
+                                                    }
+                                                >
+                                                    <i className="fa fa-times" />
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))}
                                 </tbody>
                             </table>
                             <div className="d-flex justify-content-end">
                                 <h5>
                                     Total:{" "}
                                     <span className="price text-success">
-                                        89$
+                                        {totalPrice}
                                     </span>
                                 </h5>
                             </div>

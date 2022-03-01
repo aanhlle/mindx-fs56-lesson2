@@ -5,15 +5,25 @@ import ProductCart from "./components/SmartPhoneStore/ProductCart";
 import { PHONES } from "./Consts";
 import { Component } from "react";
 
+//find phone if found return phone else phoneID
+function findPhoneInCart(arr, phoneID) {
+    let result = arr.findIndex((el) => el.id === phoneID);
+    if (result === -1) {
+        return PHONES.find((el) => el.id === phoneID);
+    } else return phoneID;
+}
+
 class App extends Component {
     constructor(props) {
         super(props);
         this.clickHandler = this.clickHandler.bind(this);
         this.addToCart = this.addToCart.bind(this);
+        this.onPhoneRemove = this.onPhoneRemove.bind(this);
+        this.onPhoneDelete = this.onPhoneDelete.bind(this);
         this.state = {
             phoneID: 1,
             countItems: 0,
-            addToCartPhoneID: 0,
+            cart: [],
         };
     }
 
@@ -22,14 +32,66 @@ class App extends Component {
     }
 
     addToCart(id) {
-        console.log(id);
         this.setState((state, props) => ({
             countItems: state.countItems + 1,
         }));
+        let findPhoneResult = findPhoneInCart(this.state.cart, id);
+        if (typeof findPhoneResult === "object") {
+            findPhoneResult.amount = 1;
+            this.setState((state, props) => ({
+                cart: [...state.cart, findPhoneResult],
+            }));
+        } else {
+            this.setState((state, props) => ({
+                cart: state.cart.map((el) =>
+                    el.id === findPhoneResult
+                        ? { ...el, amount: el.amount + 1 }
+                        : el
+                ),
+            }));
+        }
     }
 
+    onPhoneRemove(id) {
+        this.setState((state) => {
+            let { cart } = state;
+
+            let rmvPhoneIdx = cart.findIndex((phone) => phone.id === id);
+            if (cart[rmvPhoneIdx].amount > 1)
+                return {
+                    cart: cart.map((el, idx) => {
+                        if (el.id === id) return { ...el, amount: --el.amount };
+                        else return el;
+                    }),
+                    countItems: --state.countItems,
+                };
+            else {
+                let clone = JSON.parse(JSON.stringify(cart));
+                clone.splice(rmvPhoneIdx, rmvPhoneIdx + 1);
+                return {
+                    cart: clone,
+                    countItems: --state.countItems,
+                };
+            }
+        });
+    }
+
+    onPhoneDelete(id) {
+        this.setState((prev) => {
+            let clone = JSON.parse(JSON.stringify(prev.cart));
+            let rmvPhoneIdx = clone.findIndex((phone) => phone.id === id);
+            console.log(rmvPhoneIdx);
+            let rmvPhoneAmount = clone.splice(rmvPhoneIdx, rmvPhoneIdx + 1)[0]
+                .amount;
+            console.log(rmvPhoneAmount);
+            return {
+                cart: clone,
+                countItems: prev.countItems - rmvPhoneAmount,
+            };
+        });
+    }
     render() {
-        let { phoneID, countItems, addToCartPhoneID } = this.state;
+        let { phoneID, countItems, cart } = this.state;
         return (
             <>
                 <div className="max-vw-100">
@@ -43,7 +105,12 @@ class App extends Component {
                             {countItems}
                         </span>
                     </button>
-                    <ProductCart addToCartPhoneID={addToCartPhoneID} />
+                    <ProductCart
+                        cart={cart}
+                        onPhoneAdd={this.addToCart}
+                        onPhoneRemove={this.onPhoneRemove}
+                        onPhoneDelete={this.onPhoneDelete}
+                    />
                     <ProductList
                         PHONES={PHONES}
                         clickHandler={this.clickHandler}
