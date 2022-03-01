@@ -67,7 +67,7 @@ class App extends Component {
                 };
             else {
                 let clone = JSON.parse(JSON.stringify(cart));
-                clone.splice(rmvPhoneIdx, rmvPhoneIdx + 1);
+                clone.splice(rmvPhoneIdx, 1);
                 return {
                     cart: clone,
                     countItems: --state.countItems,
@@ -81,9 +81,8 @@ class App extends Component {
             let clone = JSON.parse(JSON.stringify(prev.cart));
             let rmvPhoneIdx = clone.findIndex((phone) => phone.id === id);
             console.log(rmvPhoneIdx);
-            let rmvPhoneAmount = clone.splice(rmvPhoneIdx, rmvPhoneIdx + 1)[0]
-                .amount;
-            console.log(rmvPhoneAmount);
+            let rmvPhoneAmount = clone.splice(rmvPhoneIdx, 1)[0].amount;
+
             return {
                 cart: clone,
                 countItems: prev.countItems - rmvPhoneAmount,
