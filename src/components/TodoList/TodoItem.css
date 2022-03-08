@@ -1,0 +1,12 @@
+i {
+    color: black;
+}
+
+i:hover,
+i:active {
+    color: white;
+}
+
+.completed {
+    text-decoration: line-through;
+}

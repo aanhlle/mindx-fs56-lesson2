@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 
 export default class ProductItem extends Component {
+    handleClick() {
+        this.props.clickHandler(this.props.phone.id);
+    }
+
     render() {
         let { phone, clickHandler, addToCart } = this.props;
         return (
@@ -18,7 +22,7 @@ export default class ProductItem extends Component {
                     <div className="d-flex justify-content-around">
                         <button
                             className="btn btn-primary btn-sm"
-                            onClick={() => clickHandler(phone.id)}
+                            onClick={this.handleClick.bind(this).bind(this)}
                         >
                             Xem chi tiết
                         </button>

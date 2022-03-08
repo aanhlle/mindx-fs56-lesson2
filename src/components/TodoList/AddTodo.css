@@ -1,0 +1,8 @@
+.addTodo-container {
+    position: absolute;
+    bottom: 90px;
+}
+
+.addTodo-container input {
+    outline: none;
+}
