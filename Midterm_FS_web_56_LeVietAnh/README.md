@@ -10,8 +10,11 @@
         ../src/MultipleChoiceApp
 
         component structure:
+
         MultipleChoiceApp
 
         `--<header>`
+
         --QuestionList
+
         `--<button>`
