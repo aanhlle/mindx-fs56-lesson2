@@ -7,14 +7,10 @@
     -   Bai_2
         -   index.js
     -   Bai_3
-        ../src/MultipleChoiceApp
+        ../src/components/MultipleChoiceApp
 
         component structure:
 
         MultipleChoiceApp
 
-        `--<header>`
-
         --QuestionList
-
-        `--<button>`
