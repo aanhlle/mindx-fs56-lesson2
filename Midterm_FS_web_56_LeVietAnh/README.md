@@ -11,6 +11,7 @@
 
         component structure:
         MultipleChoiceApp
-        --<header>
+
+        `--<header>`
         --QuestionList
-        --<button>
+        `--<button>`
