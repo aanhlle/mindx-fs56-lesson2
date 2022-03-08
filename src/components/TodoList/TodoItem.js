@@ -22,7 +22,7 @@ class TodoItem extends React.Component {
         e.preventDefault();
         const { id } = this.props.todo;
         const { editContent } = this.state;
-        //if (this.state.isEdit) return;
+        
         this.props.onEditSubmit(id, editContent);
         this.setState({ isEdit: !this.state.isEdit });
     };
